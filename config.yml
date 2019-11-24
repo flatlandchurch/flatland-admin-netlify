@@ -1,0 +1,233 @@
+backend:
+  name: github
+  branch: master
+  repo: flatlandchurch/flatland-site-markdown
+publish_mode: editorial_workflow
+media_folder: "images/uploads"
+collections:
+  - name: "sermons"
+    label: "Sermons"
+    folder: "content/sermons"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    fields: 
+      - {label: "Title", name: "title"}
+      - label: "Series"
+        name: "series"
+        widget: "relation"
+        collection: "series"
+        searchFields: ["title"]
+        valueField: "title"
+        displayFields: ["title"]
+        required: false
+      - {label: "Date Preached", name: "preached", widget: "datetime", format: "YYYY-MM-DDTHH:mm:ss"}
+      - label: "Speaker"
+        name: "speaker"
+        widget: "relation"
+        collection: "people"
+        searchFields: ["name"]
+        valueField: "name"
+        displayFields: ["name"]
+      - {label: "Vimeo ID", name: "vimeoID"}
+      - {label: "Image", name: "image", widget: "image"}
+  - name: "series"
+    label: "Series"
+    folder: "content/series"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    fields:
+      - {label: "Title", name: "title"}
+      - {label: "Date Started", name: "started", widget: "datetime", format: "YYYY-MM-DDTHH:mm:ss"}
+      - {label: "Image", name: "image", widget: "image"}
+      - {label: "Description", name: "body", widget: "markdown"}
+      - label: "Downloads"
+        name: "downloads"
+        widget: "list"
+        required: false
+        allow_add: true
+        fields:
+          - {label: "File", name: "url", widget: "file"}
+          - {label: "File Size", name: "fileSize", hint: "The size of the file in nearest unit of measure over 0 (100KB instead of 0.1MB"}
+          - {label: "Title", name: "title"}
+      - label: "Videos"
+        name: "videos"
+        widget: "list"
+        allow_add: true
+        required: false
+        fields:
+          - {label: "Title", name: "title"}
+          - {label: "URL", name: "url"}
+          - {label: "Featured", name: "featured", widget: "boolean"}
+      - label: "Books"
+        name: "books"
+        widget: "list"
+        allow_add: true
+        required: false
+        fields:
+          - {label: "Title", name: "title"}
+          - {label: "Author", name: "author"}
+          - {label: "URL", name: "url", hint: "A URL where the book can be viewed and purchased"}
+          - {label: "Featured", name: "featured", widget: "boolean"}
+          - {label: "Description", name: "description", widget: "text"}
+      - label: "Worship"
+        name: "worship"
+        widget: "object"
+        required: false
+        fields:
+          - {label: "Spotify Playlist URL", name: "playlistUrl", required: false}
+          - label: "Set List"
+            name: "setList"
+            widget: "list"
+            required: false
+            fields:
+              - {label: "Title", name: "title"}
+              - {label: "Author(s)", name: "author", hint: "Check PCO for the CCLI authors"}
+              - {label: "URL", name: "url", hint: "Use https://odesli.co/ to get a link to the song so folks can listen regardless of their streaming service."}
+  #  - name: "pages"
+  - name: "events"
+    label: "Events"
+    folder: "content/events"
+    create: true
+    slug: "{{slug}}"
+    extensions: "md"
+    fields:
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options: ["All Church", "Children", "Couples", "Men", "Women", "Youth"]
+  - name: "classes"
+    label: "Classes"
+    folder: "content/classes"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    fields:
+      - {label: "Title", name: "title"}
+      - {label: "Active", name: "active", widget: "boolean", hint: "Uncheck if you want to hide this from the classes page"}
+      - {label: "Featured", name: "featured", widget: "boolean", hint: "Place the class at the top of the page"}
+      - {label: "Description", name: "body", widget: "markdown"}
+      - {label: "Thumbnail Image", name: "thumbnail", widget: "image", hint: "The image that will display in the list view"}
+      - {label: "Jumbotron Image", name: "thumbnail", widget: "image", hint: "The image that will show at the top of the page"}
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options: ["Practics", "Start Here", "Core Class 101", "Core Class 201"]
+      - {label: "Child Care Available", name: "children", widget: "boolean"}
+      - {label: "Cost", name: "cost"}
+      - {label: "Order", name: "order", widget: "number", default: 0}
+      - label: "Dates"
+        name: "dates"
+        hint: "Add class dates and registration links"
+        widget: "list"
+        can_add: true
+        fields:
+          - {label: "Start Date", name: "startDate", widget: "datetime", format: "YYYY-MM-DDTHH:mm:ss"}
+          - {label: "End Date", name: "endDate", widget: "datetime", format: "YYYY-MM-DDTHH:mm:ss"}
+          - {label: "Time", name: "time"}
+          - {label: "Registration URL", name: "url"}
+          - label: "Location"
+            name: "location"
+            widget: "relation"
+            required: false
+            hint: "Recommended. If not a Flatland campus, use the address below"
+            collection: "locations"
+            searchFields: ["title", "address.zipCode", "address.city"]
+            valueField: "title"
+          - label: "Address"
+            name: "address"
+            required: false
+            widget: "object"
+            hint: "Provide only if the class isn't at a Flatland campus"
+            fields:
+              - {label: "Name", name: "name", required: false}
+              - {label: "Address One", name: "addressOne", required: false}
+              - {label: "Address Two", name: "addressTwo", required: false}
+              - {label: "City", name: "city", default: "Omaha", required: false}
+              - {label: "State", name: "state", default: "NE", pattern: ['.{2}', 'Must be a 2 character State identifier'], required: false}
+              - {label: "Zip Code", name: "zipCode", required: false}
+  #  - name: "blog"
+  - name: "missions"
+    label: "Missions Trips/Local Outreach"
+    folder: "content/classes"
+    create: true
+    slug: "{{slug}}"
+    extensions: "md"
+    fields:
+      - {label: "Title", name: "title"}
+      - {label: "Description", name: "body", widget: "markdown"}
+      - label: "Type"
+        name: "type"
+        widget: "select"
+        options:
+          - {label: "Local Outreach", value: "series_based_outreach"}
+          - {label: "Local Mission Trip", value: "local_mission_trip"}
+          - {label: "Global Mission Trip", value: "global_mission_trip"}
+          - {label: "Inbound Mission Trip", value: "inbound_mission_trip"}
+      - {label: "Cost", name: "cost", hint: "The cost of the trip. 'Free' if no cost."}
+      - {label: "Start Date", name: "startDate", widget: "datetime", format: "YYYY-MM-DDTHH:mm:ss"}
+      - {label: "End Date", name: "endDate", widget: "datetime", format: "YYYY-MM-DDTHH:mm:ss", required: false}
+      - {label: "Image", name: "image", widget: "image"}
+  - name: "locations"
+    label: "Campuses"
+    folder: "content/locations"
+    create: true
+    slug: "{{slug}}"
+    extensions: "md"
+    fields:
+      - {label: "Campus Identifier", name: "title", hint: "For Flatland 144 the identifier would be 144"}
+      - label: "Address"
+        name: "address"
+        widget: "object"
+        fields:
+          - {label: "Address One", name: "addressOne"}
+          - {label: "Address Two", name: "addressTwo", required: false}
+          - {label: "City", name: "city", default: "Omaha"}
+          - {label: "State", name: "state", default: "NE", pattern: ['.{2}', 'Must be a 2 character State identifier']}
+          - {label: "Zip Code", name: "zipCode"}
+      - {label: "Image", name: "image", widget: "image"}
+      - {label: "What to Expect", name: "body", widget: "markdown"}
+      - {label: "FAQ", name: "faq", widget: "markdown"}
+      - label: "Times"
+        name: "times"
+        widget: "list"
+        allow_add: true
+        fields:
+          - label: "Day of the Week"
+            name: "day"
+            widget: "select"
+            options: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+          - {label: "Time", name: "time"}
+      - label: "Time Change"
+        name: "timeChange"
+        widget: "object"
+        required: false
+        fields:
+          - {label: "Title", name: "title", required: false}
+          - {label: "Message", name: "message", widget: "markdown", required: false}
+          - {label: "Image", name: "image", widget: "image", required: false}
+          - label: "Expires"
+            name: "expires"
+            widget: "datetime"
+            format: "YYYY-MM-DDTHH:mm:ss"
+            hint: "As soon as this location is published, the time change will appear. Expiration will remove it automatically."
+            required: false
+      - {label: "Order", name: "order", widget: "number", default: 0}
+  - name: "people"
+    label: "People"
+    folder: "content/people"
+    create: true
+    identifier_field: "name"
+    slug: "{{slug}}"
+    extension: "md"
+    fields:
+      - {label: "Name", name: "name"}
+      - {label: "Title", name: "title"}
+      - {label: "Image", name: "image", widget: "image"}
+      - {label: "Description", name: "body", widget: "markdown"}
+site_url: https://flatlandchurch.com
+slug:
+  encoding: "ascii"
+  clean_accents: true
+
